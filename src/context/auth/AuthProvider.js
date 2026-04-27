@@ -51,6 +51,14 @@ const clearSession = () => {
   setApiToken('');
 };
 
+const sanitizeAuthMessage = (message, fallbackMessage) => {
+  if (!message) {
+    return fallbackMessage;
+  }
+
+  return /cliente|guardar/i.test(message) ? fallbackMessage : message;
+};
+
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -106,7 +114,8 @@ export function AuthProvider({ children }) {
 
       return session;
     } catch (error) {
-      throw new Error(getApiErrorMessage(error, 'No se pudo iniciar sesión.'));
+      const resolvedMessage = getApiErrorMessage(error, 'No se pudo iniciar sesión.');
+      throw new Error(sanitizeAuthMessage(resolvedMessage, 'No fue posible autenticarse con las credenciales proporcionadas.'));
     }
   }, []);
 
@@ -114,16 +123,26 @@ export function AuthProvider({ children }) {
     try {
       return await registerRequest(payload);
     } catch (error) {
-      throw new Error(getApiErrorMessage(error, 'No se pudo completar el registro.'));
+      const resolvedMessage = getApiErrorMessage(error, 'No se pudo completar el registro.');
+      throw new Error(sanitizeAuthMessage(resolvedMessage, 'No fue posible completar el registro con los datos proporcionados.'));
     }
   }, []);
 
   const logout = useCallback(async () => {
+    let logoutError = null;
+
     try {
       await logoutRequest();
+    } catch (error) {
+      const resolvedMessage = getApiErrorMessage(error, 'No se pudo cerrar la sesión.');
+      logoutError = new Error(sanitizeAuthMessage(resolvedMessage, 'No fue posible cerrar la sesión correctamente.'));
     } finally {
       clearSession();
       dispatch({ type: 'LOGOUT' });
+    }
+
+    if (logoutError) {
+      throw logoutError;
     }
   }, []);
 

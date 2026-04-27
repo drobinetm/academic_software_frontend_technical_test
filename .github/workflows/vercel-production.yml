@@ -10,6 +10,8 @@ jobs:
     name: Deploy To Vercel
     runs-on: ubuntu-latest
     environment: production
+    env:
+      REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
 
     steps:
       - name: Checkout repository
@@ -28,6 +30,13 @@ jobs:
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+
+      - name: Validate production API base URL
+        run: |
+          if [ -z "$REACT_APP_API_BASE_URL" ]; then
+            echo "Missing GitHub secret: REACT_APP_API_BASE_URL"
+            exit 1
+          fi
 
       - name: Pull Vercel environment information
         run: vercel pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"

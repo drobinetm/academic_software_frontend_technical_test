@@ -62,7 +62,7 @@ export function LoginPage() {
       if (!isMountedRef.current) {
         return;
       }
-      showFeedback({ message: error.message, severity: 'error' });
+      showFeedback({ message: error?.message || 'No se pudo iniciar sesión.', severity: 'error' });
     } finally {
       if (isMountedRef.current) {
         setLoading(false);

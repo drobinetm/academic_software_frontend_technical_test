@@ -13,6 +13,7 @@ import {
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
 import { useAuth } from '../../hooks/useAuth';
+import { useFeedback } from '../../hooks/useFeedback';
 import { useThemeMode } from '../../hooks/useThemeMode';
 import { cn } from '../../utils/cn';
 import { Button } from '../common/ui/Button';
@@ -107,6 +108,7 @@ function ShellDrawer({ collapsed, username, onNavigate }) {
 export function AppShell({ title, subtitle, children }) {
   const history = useHistory();
   const { user, logout } = useAuth();
+  const { showFeedback } = useFeedback();
   const { themeMode, setThemeMode } = useThemeMode();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -128,8 +130,10 @@ export function AppShell({ title, subtitle, children }) {
 
     try {
       await logout();
-      history.push(ROUTES.login);
+    } catch (error) {
+      showFeedback({ message: error?.message || 'No fue posible cerrar la sesión correctamente.', severity: 'error' });
     } finally {
+      history.push(ROUTES.login);
       setLogoutLoading(false);
     }
   };
@@ -164,7 +168,7 @@ export function AppShell({ title, subtitle, children }) {
               ))}
             </div>
 
-            <Button variant="secondary" className="h-12 rounded-full border-white/70 bg-white px-4 text-sm text-[#0b2238] hover:border-[#ffd7b8] hover:bg-[#ffe8d6] hover:text-[#8a3b12]" onClick={handleLogout} disabled={logoutLoading}>
+            <Button variant="secondary" className="h-12 rounded-full !border-white bg-white px-4 text-sm !text-[#0b2238] shadow-sm hover:!border-[#ffd7b8] hover:!bg-[#ffe8d6] hover:!text-[#8a3b12] disabled:!border-white/80 disabled:!bg-white/90 disabled:!text-[#0b2238]/70" onClick={handleLogout} disabled={logoutLoading}>
               <DoorOpen className="h-5 w-5 text-current" />
               {logoutLoading ? 'Cerrando sesión...' : 'Cerrar sesión'}
             </Button>

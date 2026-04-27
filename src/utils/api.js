@@ -23,6 +23,14 @@ const extractMessageFromPayload = (payload) => {
     return payload.error;
   }
 
+  if (typeof payload.detail === 'string') {
+    return payload.detail;
+  }
+
+  if (typeof payload.Detail === 'string') {
+    return payload.Detail;
+  }
+
   if (Array.isArray(payload.errors)) {
     return payload.errors.join(', ');
   }
@@ -31,6 +39,11 @@ const extractMessageFromPayload = (payload) => {
     const firstEntry = Object.values(payload.errors).find((value) => Array.isArray(value) && value.length);
     if (firstEntry) {
       return firstEntry[0];
+    }
+
+    const firstStringEntry = Object.values(payload.errors).find((value) => typeof value === 'string' && value);
+    if (firstStringEntry) {
+      return firstStringEntry;
     }
   }
 
@@ -50,7 +63,7 @@ export const getApiErrorMessage = (error, fallbackMessage) => {
   }
 
   if (error?.message === 'Network Error' || (!error?.response && error?.request)) {
-    return 'Ha ocurrido un error al guardar el cliente. Contacte con el Administrador del sistema.';
+    return 'No fue posible conectar con el servicio. Intenta nuevamente en unos momentos.';
   }
 
   if (responseStatus >= 500) {

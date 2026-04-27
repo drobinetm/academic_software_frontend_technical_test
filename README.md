@@ -89,11 +89,11 @@ URL.
 `.env.production`
 
 ```env
-REACT_APP_API_BASE_URL=https://your-vercel-api-gateway.vercel.app
+# Production builds in GitHub Actions use the REACT_APP_API_BASE_URL secret.
 ```
 
-In Vercel, configure `REACT_APP_API_BASE_URL` in the project environment
-variables for the corresponding environment.
+The production workflow injects `REACT_APP_API_BASE_URL` from GitHub Actions.
+Configure it as a repository secret before deploying from `main`.
 
 After changing any `.env` file, restart the development server.
 
@@ -190,3 +190,4 @@ To use it, configure these GitHub repository secrets:
 - `VERCEL_TOKEN`
 - `VERCEL_ORG_ID`
 - `VERCEL_PROJECT_ID`
+- `REACT_APP_API_BASE_URL`
