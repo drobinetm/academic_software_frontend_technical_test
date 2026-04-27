@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --color-canvas: #eef3f8;
+  --color-shell: rgba(245, 248, 252, 0.92);
+  --color-surface: #ffffff;
+  --color-surface-alt: #f6f9fc;
+  --color-surface-muted: rgba(32, 74, 120, 0.06);
+  --color-border: rgba(63, 88, 118, 0.14);
+  --color-border-strong: rgba(32, 74, 120, 0.26);
+  --color-text-primary: #152536;
+  --color-text-secondary: #536679;
+  --color-text-muted: #6e7f91;
+  --color-text-inverse: #f8fbff;
+  --color-accent: #204a78;
+  --color-accent-strong: #173758;
+  --color-accent-secondary: #a46a3c;
+  --color-success: #2f9d78;
+  --color-warning: #c9955b;
+  --color-danger: #c65b57;
+  --shadow-shell: 0 20px 48px rgba(15, 23, 42, 0.08);
+  --shadow-surface: 0 20px 40px rgba(15, 23, 42, 0.08);
+  --shadow-floating: 0 28px 64px rgba(15, 23, 42, 0.16);
+}
+
+:root.dark {
+  color-scheme: dark;
+  --color-canvas: #0d1218;
+  --color-shell: rgba(16, 23, 31, 0.94);
+  --color-surface: #141c25;
+  --color-surface-alt: #1a2430;
+  --color-surface-muted: rgba(255, 255, 255, 0.05);
+  --color-border: rgba(153, 167, 184, 0.16);
+  --color-border-strong: rgba(126, 166, 255, 0.28);
+  --color-text-primary: #edf2f7;
+  --color-text-secondary: #a0b0c1;
+  --color-text-muted: #8b9aac;
+  --color-text-inverse: #ffffff;
+  --color-accent: #7ea6ff;
+  --color-accent-strong: #5c83db;
+  --color-accent-secondary: #d0a171;
+  --color-success: #49b28f;
+  --color-warning: #d9aa74;
+  --color-danger: #d97572;
+  --shadow-shell: 0 24px 60px rgba(0, 0, 0, 0.34);
+  --shadow-surface: 0 22px 44px rgba(0, 0, 0, 0.26);
+  --shadow-floating: 0 32px 80px rgba(0, 0, 0, 0.42);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  background: var(--color-canvas);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(164, 106, 60, 0.12), transparent 30%),
+    radial-gradient(circle at top right, rgba(32, 74, 120, 0.12), transparent 34%),
+    linear-gradient(180deg, var(--color-canvas) 0%, var(--color-canvas) 100%);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(32, 74, 120, 0.18);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(96, 125, 148, 0.35);
+  border-radius: 999px;
+}
