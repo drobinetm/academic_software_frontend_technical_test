@@ -197,9 +197,9 @@ export function CustomerFormPage() {
         </div>
 
         <form id="customer-form" onSubmit={handleSubmit} noValidate className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <FormTextField label="Identificación *" value={values.identificacion} onChange={handleChange('identificacion')} error={errors.identificacion} />
-          <FormTextField label="Nombre *" value={values.nombre} onChange={handleChange('nombre')} error={errors.nombre} />
-          <FormTextField label="Apellidos *" value={values.apellidos} onChange={handleChange('apellidos')} error={errors.apellidos} />
+          <FormTextField label="Identificación *" value={values.identificacion} onChange={handleChange('identificacion')} error={errors.identificacion} keepLabel />
+          <FormTextField label="Nombre *" value={values.nombre} onChange={handleChange('nombre')} error={errors.nombre} keepLabel />
+          <FormTextField label="Apellidos *" value={values.apellidos} onChange={handleChange('apellidos')} error={errors.apellidos} keepLabel />
 
           <FormTextField
             select
@@ -216,8 +216,8 @@ export function CustomerFormPage() {
           <FormTextField label="Fecha de nacimiento *" type="date" value={values.fNacimiento} onChange={handleChange('fNacimiento')} error={errors.fNacimiento} />
           <FormTextField label="Fecha de afiliación *" type="date" value={values.fAfiliacion} onChange={handleChange('fAfiliacion')} error={errors.fAfiliacion} />
 
-          <FormTextField label="Teléfono celular *" value={values.telefonoCelular} onChange={handleChange('telefonoCelular')} error={errors.telefonoCelular} />
-          <FormTextField label="Teléfono alterno *" value={values.otroTelefono} onChange={handleChange('otroTelefono')} error={errors.otroTelefono} />
+          <FormTextField label="Teléfono celular *" value={values.telefonoCelular} onChange={handleChange('telefonoCelular')} error={errors.telefonoCelular} keepLabel />
+          <FormTextField label="Teléfono alterno *" value={values.otroTelefono} onChange={handleChange('otroTelefono')} error={errors.otroTelefono} keepLabel />
           <FormTextField
             select
             label="Interés *"

@@ -3,6 +3,14 @@ export const formatDateForInput = (value) => {
     return '';
   }
 
+  if (typeof value === 'string') {
+    const dateOnlyMatch = value.match(/^(\d{4}-\d{2}-\d{2})/);
+
+    if (dateOnlyMatch) {
+      return dateOnlyMatch[1];
+    }
+  }
+
   const parsedDate = new Date(value);
 
   if (Number.isNaN(parsedDate.getTime())) {
@@ -17,5 +25,19 @@ export const serializeDateForApi = (value) => {
     return '';
   }
 
-  return new Date(`${value}T00:00:00`).toISOString();
+  if (typeof value === 'string') {
+    const dateOnlyMatch = value.match(/^(\d{4}-\d{2}-\d{2})$/);
+
+    if (dateOnlyMatch) {
+      return dateOnlyMatch[1];
+    }
+  }
+
+  const parsedDate = new Date(value);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return '';
+  }
+
+  return parsedDate.toISOString().slice(0, 10);
 };

@@ -27,8 +27,8 @@ export function CustomerListTable({ rows, onEdit, onDelete }) {
                       <Button variant="secondary" size="icon" aria-label="Editar cliente" title="Editar cliente" onClick={() => onEdit(customer)}>
                         <Pencil className="h-4 w-4 text-accent" />
                       </Button>
-                      <Button variant="secondary" size="icon" aria-label="Eliminar cliente" title="Eliminar cliente" onClick={() => onDelete(customer)}>
-                        <Trash2 className="h-4 w-4 text-danger" />
+                      <Button variant="danger" size="icon" aria-label="Eliminar cliente" title="Eliminar cliente" onClick={() => onDelete(customer)}>
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </td>

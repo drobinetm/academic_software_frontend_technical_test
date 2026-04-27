@@ -1,4 +1,8 @@
-import { BACKEND_MESSAGE_TRANSLATIONS } from '../constants/apiMessages';
+import {
+  BACKEND_FIELD_LABELS,
+  BACKEND_MESSAGE_TRANSLATIONS,
+  BACKEND_VALIDATION_MESSAGE_TRANSLATIONS,
+} from '../constants/apiMessages';
 
 const translateBackendMessage = (message) => {
   if (!message || typeof message !== 'string') {
@@ -8,6 +12,48 @@ const translateBackendMessage = (message) => {
   const normalizedMessage = message.trim().toLowerCase();
 
   return BACKEND_MESSAGE_TRANSLATIONS[normalizedMessage] || message;
+};
+
+const formatValidationError = (validationError) => {
+  if (!validationError || typeof validationError !== 'object') {
+    return '';
+  }
+
+  const fieldKey = Array.isArray(validationError.loc)
+    ? validationError.loc[validationError.loc.length - 1]
+    : '';
+  const fieldLabel = BACKEND_FIELD_LABELS[fieldKey] || fieldKey;
+  const normalizedMessage = typeof validationError.msg === 'string'
+    ? validationError.msg.trim().toLowerCase()
+    : '';
+  const translatedMessage = BACKEND_VALIDATION_MESSAGE_TRANSLATIONS[normalizedMessage]
+    || translateBackendMessage(validationError.msg);
+
+  if (!translatedMessage) {
+    return fieldLabel || '';
+  }
+
+  if (!fieldLabel) {
+    return translatedMessage;
+  }
+
+  if (/^(es |debe )/i.test(translatedMessage)) {
+    return `${fieldLabel} ${translatedMessage}`;
+  }
+
+  return `${fieldLabel}: ${translatedMessage}`;
+};
+
+const extractValidationErrors = (payload) => {
+  if (!Array.isArray(payload?.errors)) {
+    return '';
+  }
+
+  const messages = payload.errors
+    .map((validationError) => formatValidationError(validationError))
+    .filter(Boolean);
+
+  return [...new Set(messages)].join(' ');
 };
 
 const extractMessageFromPayload = (payload) => {
@@ -21,6 +67,11 @@ const extractMessageFromPayload = (payload) => {
     }
 
     return translateBackendMessage(payload);
+  }
+
+  const validationMessage = extractValidationErrors(payload);
+  if (validationMessage) {
+    return validationMessage;
   }
 
   if (typeof payload.message === 'string') {
@@ -44,7 +95,7 @@ const extractMessageFromPayload = (payload) => {
   }
 
   if (Array.isArray(payload.errors)) {
-    return payload.errors.join(', ');
+    return payload.errors.map((errorItem) => translateBackendMessage(errorItem)).filter(Boolean).join(', ');
   }
 
   if (payload.errors && typeof payload.errors === 'object') {
