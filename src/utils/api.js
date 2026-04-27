@@ -1,3 +1,15 @@
+import { BACKEND_MESSAGE_TRANSLATIONS } from '../constants/apiMessages';
+
+const translateBackendMessage = (message) => {
+  if (!message || typeof message !== 'string') {
+    return message;
+  }
+
+  const normalizedMessage = message.trim().toLowerCase();
+
+  return BACKEND_MESSAGE_TRANSLATIONS[normalizedMessage] || message;
+};
+
 const extractMessageFromPayload = (payload) => {
   if (!payload) {
     return '';
@@ -8,27 +20,27 @@ const extractMessageFromPayload = (payload) => {
       return '';
     }
 
-    return payload;
+    return translateBackendMessage(payload);
   }
 
   if (typeof payload.message === 'string') {
-    return payload.message;
+    return translateBackendMessage(payload.message);
   }
 
   if (typeof payload.title === 'string') {
-    return payload.title;
+    return translateBackendMessage(payload.title);
   }
 
   if (typeof payload.error === 'string') {
-    return payload.error;
+    return translateBackendMessage(payload.error);
   }
 
   if (typeof payload.detail === 'string') {
-    return payload.detail;
+    return translateBackendMessage(payload.detail);
   }
 
   if (typeof payload.Detail === 'string') {
-    return payload.Detail;
+    return translateBackendMessage(payload.Detail);
   }
 
   if (Array.isArray(payload.errors)) {
@@ -43,7 +55,7 @@ const extractMessageFromPayload = (payload) => {
 
     const firstStringEntry = Object.values(payload.errors).find((value) => typeof value === 'string' && value);
     if (firstStringEntry) {
-      return firstStringEntry;
+      return translateBackendMessage(firstStringEntry);
     }
   }
 
